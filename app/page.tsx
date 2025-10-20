@@ -1,174 +1,167 @@
 'use client';
 
-import { AppShell } from './components/AppShell';
-import { StatCard } from './components/StatCard';
-import { PatternCard } from './components/PatternCard';
-import { ProgressBar } from './components/ProgressBar';
-import { Target, Zap, Award, TrendingUp } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { TrendingUp, Target, Award, BarChart3, Zap, Users } from 'lucide-react';
+import { DrillSimulator } from './components/DrillSimulator';
+import { Leaderboard } from './components/Leaderboard';
+import { Watchlist } from './components/Watchlist';
+import { StatsCard } from './components/StatsCard';
 
 export default function Home() {
-  const mockPatterns = [
-    {
-      title: 'Head and Shoulders',
-      subtitle: 'Reversal Pattern • Intermediate',
-      confidence: 85,
-    },
-    {
-      title: 'Bull Flag',
-      subtitle: 'Continuation Pattern • Beginner',
-      confidence: 92,
-    },
-    {
-      title: 'Ascending Triangle',
-      subtitle: 'Breakout Pattern • Intermediate',
-      confidence: 78,
-    },
-  ];
+  const [activeTab, setActiveTab] = useState<'drill' | 'watchlist' | 'leaderboard'>('drill');
+  const [userStats, setUserStats] = useState({
+    skillScore: 0,
+    accuracyRate: 0,
+    streakDays: 0,
+    totalDrills: 0,
+    drillsToday: 0,
+  });
+
+  useEffect(() => {
+    // Simulate loading user stats
+    setUserStats({
+      skillScore: 0,
+      accuracyRate: 0,
+      streakDays: 0,
+      totalDrills: 0,
+      drillsToday: 0,
+    });
+  }, []);
 
   return (
-    <AppShell>
-      <div className="space-y-6 animate-fade-in">
-        {/* Welcome Section */}
-        <div 
-          className="p-6 rounded-lg border"
-          style={{ 
-            backgroundColor: 'var(--color-surface)',
-            borderColor: 'var(--color-border)'
-          }}
-        >
-          <h2 className="text-2xl font-bold mb-2">Welcome to PatternForge</h2>
-          <p className="mb-4" style={{ color: 'var(--color-text-muted)' }}>
-            Master chart patterns through gamified training and real-time alerts
-          </p>
-          <div className="flex gap-3">
-            <button 
-              className="flex-1 py-3 rounded-lg font-medium transition-all duration-200 hover:shadow-glow"
-              style={{ 
-                backgroundColor: 'var(--color-accent)',
-                color: 'white'
-              }}
-            >
-              Start Daily Drill
-            </button>
-            <button 
-              className="px-6 py-3 rounded-lg font-medium border transition-all duration-200"
-              style={{ 
-                borderColor: 'var(--color-border)',
-                color: 'var(--color-fg)'
-              }}
-            >
-              Take Quiz
+    <main className="min-h-screen bg-bg">
+      {/* Header */}
+      <header className="border-b border-border bg-surface">
+        <div className="max-w-6xl mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
+                <TrendingUp className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-fg">PatternForge</h1>
+                <p className="text-sm text-muted">Master chart patterns</p>
+              </div>
+            </div>
+            <button className="px-4 py-2 bg-primary text-white rounded-lg font-medium hover:opacity-90 transition-opacity">
+              Connect Wallet
             </button>
           </div>
         </div>
+      </header>
 
-        {/* Stats Grid */}
+      {/* Stats Overview */}
+      <section className="max-w-6xl mx-auto px-4 py-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <StatCard
-            label="Skill Score"
-            value="847"
-            icon={<Award className="w-5 h-5" />}
-            trend="up"
-            trendValue="+23"
-          />
-          <StatCard
-            label="Accuracy"
-            value="87%"
+          <StatsCard
             icon={<Target className="w-5 h-5" />}
-            trend="up"
-            trendValue="+5%"
+            label="Skill Score"
+            value={userStats.skillScore.toString()}
+            max="1000"
+            color="primary"
           />
-          <StatCard
-            label="Streak"
-            value="7 days"
+          <StatsCard
+            icon={<BarChart3 className="w-5 h-5" />}
+            label="Accuracy"
+            value={`${userStats.accuracyRate}%`}
+            color="success"
+          />
+          <StatsCard
             icon={<Zap className="w-5 h-5" />}
-            trend="neutral"
+            label="Streak"
+            value={`${userStats.streakDays} days`}
+            color="warning"
           />
-          <StatCard
-            label="Drills Left"
-            value="3/3"
-            icon={<TrendingUp className="w-5 h-5" />}
+          <StatsCard
+            icon={<Award className="w-5 h-5" />}
+            label="Total Drills"
+            value={userStats.totalDrills.toString()}
+            color="accent"
           />
         </div>
+      </section>
 
-        {/* Daily Progress */}
-        <div 
-          className="p-6 rounded-lg border"
-          style={{ 
-            backgroundColor: 'var(--color-surface)',
-            borderColor: 'var(--color-border)'
-          }}
-        >
-          <h3 className="text-lg font-semibold mb-4">Today's Progress</h3>
-          <div className="space-y-4">
-            <ProgressBar
-              label="Pattern Mastery"
-              value={847}
-              max={1000}
-              variant="success"
-            />
-            <ProgressBar
-              label="Weekly Goal"
-              value={12}
-              max={20}
-              variant="default"
-            />
+      {/* Tab Navigation */}
+      <section className="max-w-6xl mx-auto px-4">
+        <div className="flex gap-2 border-b border-border">
+          <button
+            onClick={() => setActiveTab('drill')}
+            className={`px-6 py-3 font-medium transition-colors relative ${
+              activeTab === 'drill'
+                ? 'text-primary'
+                : 'text-muted hover:text-fg'
+            }`}
+          >
+            Training Drills
+            {activeTab === 'drill' && (
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary" />
+            )}
+          </button>
+          <button
+            onClick={() => setActiveTab('watchlist')}
+            className={`px-6 py-3 font-medium transition-colors relative ${
+              activeTab === 'watchlist'
+                ? 'text-primary'
+                : 'text-muted hover:text-fg'
+            }`}
+          >
+            Watchlist
+            {activeTab === 'watchlist' && (
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary" />
+            )}
+          </button>
+          <button
+            onClick={() => setActiveTab('leaderboard')}
+            className={`px-6 py-3 font-medium transition-colors relative ${
+              activeTab === 'leaderboard'
+                ? 'text-primary'
+                : 'text-muted hover:text-fg'
+            }`}
+          >
+            Leaderboard
+            {activeTab === 'leaderboard' && (
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary" />
+            )}
+          </button>
+        </div>
+      </section>
+
+      {/* Main Content */}
+      <section className="max-w-6xl mx-auto px-4 py-6">
+        {activeTab === 'drill' && (
+          <DrillSimulator
+            drillsToday={userStats.drillsToday}
+            onDrillComplete={(isCorrect) => {
+              setUserStats(prev => ({
+                ...prev,
+                totalDrills: prev.totalDrills + 1,
+                drillsToday: prev.drillsToday + 1,
+                skillScore: prev.skillScore + (isCorrect ? 10 : -5),
+                accuracyRate: Math.round(
+                  ((prev.accuracyRate * prev.totalDrills) + (isCorrect ? 100 : 0)) / 
+                  (prev.totalDrills + 1)
+                ),
+              }));
+            }}
+          />
+        )}
+        {activeTab === 'watchlist' && <Watchlist />}
+        {activeTab === 'leaderboard' && <Leaderboard />}
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-border mt-12">
+        <div className="max-w-6xl mx-auto px-4 py-6">
+          <div className="flex items-center justify-between text-sm text-muted">
+            <p>© 2024 PatternForge. Built on Base.</p>
+            <div className="flex items-center gap-4">
+              <a href="#" className="hover:text-fg transition-colors">Docs</a>
+              <a href="#" className="hover:text-fg transition-colors">Support</a>
+              <a href="#" className="hover:text-fg transition-colors">Twitter</a>
+            </div>
           </div>
         </div>
-
-        {/* Recommended Patterns */}
-        <div>
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold">Recommended Patterns</h3>
-            <button 
-              className="text-sm font-medium"
-              style={{ color: 'var(--color-accent)' }}
-            >
-              View All →
-            </button>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {mockPatterns.map((pattern, index) => (
-              <PatternCard
-                key={index}
-                variant="drill"
-                title={pattern.title}
-                subtitle={pattern.subtitle}
-                confidence={pattern.confidence}
-                imageUrl="/chart-placeholder.png"
-                onAction={() => console.log('Start drill:', pattern.title)}
-                actionLabel="Start Drill"
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Premium Unlock CTA */}
-        <div 
-          className="p-6 rounded-lg border relative overflow-hidden"
-          style={{ 
-            backgroundColor: 'var(--color-surface)',
-            borderColor: 'var(--color-accent)'
-          }}
-        >
-          <div className="absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-20" style={{ backgroundColor: 'var(--color-accent)' }} />
-          <div className="relative">
-            <h3 className="text-xl font-bold mb-2">Unlock Unlimited Drills</h3>
-            <p className="mb-4" style={{ color: 'var(--color-text-muted)' }}>
-              Get unlimited pattern drills, real-time alerts, and premium features for 100 $FORGE tokens or $2.99/month
-            </p>
-            <button 
-              className="px-6 py-3 rounded-lg font-medium transition-all duration-200 hover:shadow-glow"
-              style={{ 
-                backgroundColor: 'var(--color-accent)',
-                color: 'white'
-              }}
-            >
-              Unlock Premium
-            </button>
-          </div>
-        </div>
-      </div>
-    </AppShell>
+      </footer>
+    </main>
   );
 }

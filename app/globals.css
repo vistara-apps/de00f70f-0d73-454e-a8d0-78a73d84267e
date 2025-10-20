@@ -3,36 +3,18 @@
 @tailwind utilities;
 
 :root {
-  /* Coinbase Theme - Dark Navy */
-  --color-bg: #0a1929;
-  --color-fg: #e3f2fd;
-  --color-accent: #0052ff;
-  --color-border: #1e3a5f;
-  --color-surface: #132f4c;
-  --color-surface-hover: #1a4971;
-  --color-text-muted: #90caf9;
-  --color-primary: #0052ff;
-  --color-success: #00c853;
-  --color-danger: #ff1744;
-  --color-warning: #ffc107;
-  
-  /* Spacing */
-  --spacing-xs: 4px;
-  --spacing-sm: 8px;
-  --spacing-md: 16px;
-  --spacing-lg: 24px;
-  --spacing-xl: 32px;
-  
-  /* Border Radius */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-full: 9999px;
-  
-  /* Shadows */
-  --shadow-card: 0 4px 16px rgba(0, 82, 255, 0.15);
-  --shadow-elevated: 0 8px 32px rgba(0, 82, 255, 0.2);
-  --shadow-glow: 0 0 24px rgba(0, 82, 255, 0.4);
+  /* Coinbase Theme - Dark navy background with Coinbase blue accents */
+  --color-bg: hsl(220, 26%, 14%);
+  --color-fg: hsl(210, 40%, 98%);
+  --color-surface: hsl(220, 26%, 18%);
+  --color-surface-hover: hsl(220, 26%, 22%);
+  --color-accent: hsl(217, 100%, 50%);
+  --color-primary: hsl(217, 100%, 50%);
+  --color-success: hsl(142, 76%, 36%);
+  --color-danger: hsl(0, 84%, 60%);
+  --color-warning: hsl(38, 92%, 50%);
+  --color-muted: hsl(217, 10%, 64%);
+  --color-border: hsl(220, 26%, 25%);
 }
 
 * {
@@ -57,61 +39,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--color-surface);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--color-accent);
-  border-radius: var(--radius-full);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-primary);
-}
-
-/* Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.3s ease-out;
-}
-
-@keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(0, 82, 255, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 30px rgba(0, 82, 255, 0.6);
-  }
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
 }
